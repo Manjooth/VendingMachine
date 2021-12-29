@@ -86,7 +86,7 @@ public class VendingMachine implements VendingMachineInterface
     }
 
     public int getProductTotal()
-    {
+    { // test aid
         return productTotal;
     }
 
