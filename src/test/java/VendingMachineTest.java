@@ -21,23 +21,23 @@ class VendingMachineTest
     @Test
     void shouldReturnErrorMessageWhenCoinsAreNotAccepted()
     {
-        String response = vendingMachine.acceptCoins(List.of("100"));
+        String response = vendingMachine.acceptCoins(List.of(100));
         assertEquals(INVALID_COIN_IS_NOT_ACCEPTED_MESSAGE, response);
     }
 
     @Test
     void shouldReturnSuccessMessageWhenCoinsAreAccepted()
     {
-        String response = vendingMachine.acceptCoins(List.of("penny"));
+        String response = vendingMachine.acceptCoins(List.of(1));
         assertEquals(COINS_ACCEPTED_MESSAGE, response);
     }
 
     @Test
     void shouldReturnErrorMessageWhenListOfCoinsGivenAndTwoCoinsAreNotAccepted()
     {
-        String response = vendingMachine.acceptCoins(List.of("penny", "dime", "fifty", "twenty"));
-        String response2 = vendingMachine.acceptCoins(List.of("penny", "dime", "fifty", "twenty", "penny", "penny", "quarter"));
-        String response3 = vendingMachine.acceptCoins(List.of("penny", "penny", "quarter", "1"));
+        String response = vendingMachine.acceptCoins(List.of(1, 10, 50, 20));
+        String response2 = vendingMachine.acceptCoins(List.of(1, 10, 50, 20, 1, 1, 25));
+        String response3 = vendingMachine.acceptCoins(List.of(1, 1, 25, 100));
 
         assertEquals(INVALID_COIN_IS_NOT_ACCEPTED_MESSAGE, response);
         assertEquals(INVALID_COIN_IS_NOT_ACCEPTED_MESSAGE, response2);
@@ -47,9 +47,9 @@ class VendingMachineTest
     @Test
     void shouldReturnSuccessMessageWhenListOfAcceptedCoinsAreGiven()
     {
-        String response = vendingMachine.acceptCoins(List.of("penny", "penny", "quarter"));
-        String response2 = vendingMachine.acceptCoins(List.of("quarter", "nickel"));
-        String response3 = vendingMachine.acceptCoins(List.of("dime", "penny", "nickel", "dime", "penny", "quarter"));
+        String response = vendingMachine.acceptCoins(List.of(1, 5, 10, 25));
+        String response2 = vendingMachine.acceptCoins(List.of(25, 5));
+        String response3 = vendingMachine.acceptCoins(List.of(10, 5, 25, 1, 1, 25));
 
         assertEquals(COINS_ACCEPTED_MESSAGE, response);
         assertEquals(COINS_ACCEPTED_MESSAGE, response2);
@@ -59,7 +59,7 @@ class VendingMachineTest
     @Test
     void shouldReturnCorrectBalanceWhenCoinsAreAllCorrect()
     {
-        vendingMachine.acceptCoins(List.of("nickel", "dime", "quarter"));
+        vendingMachine.acceptCoins(List.of(5, 10, 25));
         int response = vendingMachine.getBalance();
 
         assertEquals(40, response);
@@ -68,7 +68,7 @@ class VendingMachineTest
     @Test
     void shouldReturnCorrectBalanceWhenCoinsAreIncorrect()
     {
-        vendingMachine.acceptCoins(List.of("nickel", "dime", "apple"));
+        vendingMachine.acceptCoins(List.of(5, 10, 2));
         int response = vendingMachine.getBalance();
 
         assertEquals(0, response);
@@ -109,7 +109,7 @@ class VendingMachineTest
     @Test
     void shouldReturnRefundMessageWhenCancellingRequestAndBalanceShouldBeZero()
     {
-        vendingMachine.acceptCoins(List.of("quarter"));
+        vendingMachine.acceptCoins(List.of(25));
         String response = vendingMachine.cancelRequest();
 
         assertEquals("Amount refunded: 25", response);
@@ -119,7 +119,7 @@ class VendingMachineTest
     @Test
     void shouldReturnErrorMessageWhenBalanceIsNotEnoughToBuyProducts()
     {
-        vendingMachine.acceptCoins(List.of("quarter"));
+        vendingMachine.acceptCoins(List.of(25));
         vendingMachine.selectProduct(List.of("coke", "soda"));
         String response = vendingMachine.buyProduct();
 
@@ -127,9 +127,9 @@ class VendingMachineTest
     }
 
     @Test
-    void shouldReturnErrorMessageWhenBalanceIsExactlyCorrectToBuyProducts()
+    void shouldReturnSuccessMessageWhenBalanceIsExactlyCorrectToBuyProducts()
     {
-        vendingMachine.acceptCoins(List.of("quarter", "dime"));
+        vendingMachine.acceptCoins(List.of(25, 10));
         vendingMachine.selectProduct(List.of("pepsi"));
         String response = vendingMachine.buyProduct();
 
@@ -139,7 +139,7 @@ class VendingMachineTest
     @Test
     void shouldReturnSuccessMessageWhenBalanceIsMoreThanEnoughToBuyProducts()
     {
-        vendingMachine.acceptCoins(List.of("quarter", "dime", "dime"));
+        vendingMachine.acceptCoins(List.of(25, 10, 10));
         vendingMachine.selectProduct(List.of("pepsi"));
         String response = vendingMachine.buyProduct();
 

@@ -5,7 +5,7 @@ public interface VendingMachineInterface
     /**
      Accepts coins of 1,5,10,25 Cents i.e. penny, nickel, dime, and quarter.
      **/
-    String acceptCoins(List<String> coins);
+    String acceptCoins(List<Integer> coins);
 
     /**
      Allow user to select products Coke(25), Pepsi(35), Soda(45)
